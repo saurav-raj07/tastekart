@@ -1,0 +1,28 @@
+services:
+  mongo:
+    image: mongo:8.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - tastekart_mongo_data:/data/db
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      MONGO_URL: mongodb://mongo:27017
+      MONGO_DB_NAME: tastekart
+      JWT_SECRET: change-this-secret-in-production
+      MAPPLS_ACCESS_TOKEN: ${MAPPLS_ACCESS_TOKEN:-fsdskoezjmibcnwuceyychchwvcarbsryyah}
+      TASTEKART_ADMIN_EMAIL: admin@tastekart.com
+      TASTEKART_ADMIN_PASSWORD: Admin@123
+    depends_on:
+      - mongo
+    ports:
+      - "3001:3001"
+
+volumes:
+  tastekart_mongo_data:

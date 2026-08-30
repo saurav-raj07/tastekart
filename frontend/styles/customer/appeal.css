@@ -1,0 +1,1082 @@
+/* Polished visual layer for the Tastekart experience */
+:root {
+    --ink: #211916;
+    --orange: #e95732;
+    --line: #e6ded2;
+    --muted: #81776d;
+    --shadow: 0 18px 50px rgba(63, 42, 25, .09)
+}
+
+body {
+    background: radial-gradient(circle at 8% 12%, #fffdf9 0 12%, transparent 29%), #f7f4ee;
+    letter-spacing: -.01em
+}
+
+.topbar {
+    height: 96px;
+    background: rgba(255, 253, 249, .88);
+    backdrop-filter: blur(16px);
+    border-bottom-color: rgba(230, 222, 210, .8);
+    box-shadow: 0 1px 18px rgba(47, 31, 18, .03)
+}
+
+.brand-logo {
+    width: 102px !important;
+    height: 84px !important;
+}
+
+.location small {
+    font-size: 12px;
+}
+
+.location strong {
+    font-size: 15px;
+}
+
+.brand {
+    font-size: 24px;
+    letter-spacing: -1.4px
+}
+
+.location {
+    color: var(--muted)
+}
+
+.location strong {
+    color: var(--ink)
+}
+
+.hero-wrap {
+    height: 365px;
+    margin-top: 31px;
+    border-radius: 30px;
+    background: linear-gradient(122deg, #dcebd7 0%, #d8e8d2 52%, #c5dcc1 100%);
+    box-shadow: var(--shadow)
+}
+
+.hero-wrap:before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(#fff 1px, transparent 1px);
+    background-size: 19px 19px;
+    opacity: .18;
+    mask-image: linear-gradient(90deg, #000, transparent 75%)
+}
+
+.hero-copy {
+    padding: 49px 65px
+}
+
+.live-pill {
+    color: #557453;
+    font-weight: 700
+}
+
+.hero-copy h1 {
+    font-size: 60px;
+    line-height: .98;
+    margin: 24px 0 16px;
+    letter-spacing: -4px
+}
+
+.hero-copy p {
+    font-size: 16px;
+    color: #657260
+}
+
+.hero-meta {
+    margin-top: 25px;
+    color: #5d705b
+}
+
+.hero-cta {
+    margin-top: 25px;
+    border: 0;
+    border-radius: 12px;
+    background: var(--ink);
+    color: #fff;
+    padding: 13px 17px;
+    font-size: 12px;
+    font-weight: 800;
+    box-shadow: 0 8px 18px #21191625;
+    cursor: pointer;
+    transition: transform .2s, box-shadow .2s
+}
+
+.hero-cta span {
+    font-size: 17px;
+    margin-left: 9px
+}
+
+.hero-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 22px #21191635
+}
+
+.hero-art {
+    min-width: 46%
+}
+
+.hero-glow {
+    position: absolute;
+    width: 430px;
+    height: 430px;
+    right: 9px;
+    top: -110px;
+    border-radius: 50%;
+    background: #f9d66b55;
+    filter: blur(3px)
+}
+
+.sun {
+    width: 340px;
+    height: 340px;
+    right: 80px;
+    top: -72px;
+    background: linear-gradient(135deg, #f9d663, #f2b747)
+}
+
+.art-plate {
+    right: 112px;
+    top: 63px;
+    font-size: 185px;
+    filter: drop-shadow(10px 18px 5px #a8722945)
+}
+
+.trust-strip {
+    max-width: 1240px;
+    margin: 17px auto 0;
+    padding: 0 10px;
+    display: flex;
+    gap: 35px;
+    align-items: center;
+    color: var(--muted);
+    font: 10px 'DM Mono';
+    text-transform: uppercase;
+    letter-spacing: .6px
+}
+
+.trust-strip b {
+    color: var(--ink);
+    font: 800 12px 'Plus Jakarta Sans';
+    text-transform: none;
+    margin-right: 4px
+}
+
+.trust-dot {
+    margin-left: auto;
+    color: #a7bda1;
+    font-size: 13px
+}
+
+section {
+    margin-top: 55px
+}
+
+.section-head h2 {
+    font-size: 28px;
+    letter-spacing: -1.5px
+}
+
+.kicker {
+    font-weight: 700;
+    color: #799072
+}
+
+.category-row {
+    gap: 16px;
+    margin-top: 24px
+}
+
+.category {
+    min-width: 126px;
+    padding: 18px 12px;
+    background: rgba(255, 254, 250, .8);
+    box-shadow: 0 5px 15px rgba(67, 46, 28, .025);
+    border-radius: 20px
+}
+
+.category:hover {
+    border-color: #dba58e;
+    box-shadow: 0 10px 22px #e9573218
+}
+
+.category .emoji {
+    height: 51px;
+    font-size: 40px
+}
+
+.restaurant-heading {
+    margin-top: 62px
+}
+
+.restaurant-grid {
+    gap: 20px;
+    margin-top: 25px
+}
+
+.restaurant-card {
+    border-radius: 21px;
+    box-shadow: 0 5px 18px rgba(62, 42, 27, .035)
+}
+
+.restaurant-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 30px rgba(62, 42, 27, .11)
+}
+
+.restaurant-image {
+    height: 185px
+}
+
+.restaurant-image:after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 58%, #2119162b)
+}
+
+.offer-tag {
+    z-index: 1;
+    top: 14px;
+    left: 14px;
+    border-radius: 7px;
+    box-shadow: 0 4px 10px #9b321e38
+}
+
+.restaurant-info {
+    padding: 18px
+}
+
+.restaurant-info h3 {
+    font-size: 16px;
+    letter-spacing: -.4px
+}
+
+.menu-button {
+    border-radius: 10px;
+    padding: 10px;
+    transition: .2s;
+    cursor: pointer
+}
+
+.menu-button:hover {
+    background: var(--orange);
+    color: #fff
+}
+
+.floating-cart {
+    bottom: 27px;
+    padding: 13px 19px;
+    border-radius: 15px;
+    box-shadow: 0 14px 30px #2119163d
+}
+
+.cart-drawer {
+    padding: 31px;
+    border-radius: 24px 0 0 24px
+}
+
+.menu-panel {
+    border-radius: 26px;
+    box-shadow: 0 25px 70px #21191630
+}
+
+.menu-add {
+    cursor: pointer;
+    transition: .2s
+}
+
+.menu-add:hover {
+    background: var(--orange);
+    color: #fff
+}
+
+.toast {
+    border-radius: 13px;
+    box-shadow: 0 10px 25px #21191635
+}
+
+@media(max-width:800px) {
+    .hero-wrap {
+        margin-top: 18px;
+        height: 350px;
+        border-radius: 24px
+    }
+
+    .hero-copy {
+        padding: 38px 28px
+    }
+
+    .hero-copy h1 {
+        font-size: 48px
+    }
+
+    .trust-strip {
+        padding: 0 18px;
+        gap: 14px;
+        justify-content: space-between
+    }
+
+    .trust-strip span:nth-child(3),
+    .trust-dot {
+        display: none
+    }
+}
+
+@media(max-width:520px) {
+    .hero-wrap {
+        height: 390px
+    }
+
+    .hero-copy {
+        padding: 33px 24px
+    }
+
+    .hero-copy h1 {
+        font-size: 44px
+    }
+
+    .hero-art {
+        right: -95px;
+        opacity: .8
+    }
+
+    .trust-strip {
+        font-size: 9px
+    }
+
+    .restaurant-grid {
+        padding-left: 15px;
+        padding-right: 15px
+    }
+}
+
+.hero-food {
+    position: absolute;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 62px;
+    height: 62px;
+    border: 1px solid #fff8;
+    border-radius: 20px;
+    background: #fffaf0cc;
+    box-shadow: 0 10px 22px #8c5c2a2e;
+    font-size: 38px;
+    animation: hero-food-float 3s ease-in-out infinite
+}
+
+.food-one {
+    right: 330px;
+    top: 34px;
+    transform: rotate(-12deg)
+}
+
+.food-two {
+    right: 34px;
+    top: 214px;
+    transform: rotate(10deg);
+    animation-delay: -1.5s
+}
+
+.food-three {
+    right: 245px;
+    bottom: 20px;
+    transform: rotate(8deg);
+    animation-delay: -3s
+}
+
+@keyframes hero-food-float {
+
+    0%,
+    100% {
+        translate: 0 0
+    }
+
+    50% {
+        translate: 0 -14px
+    }
+}
+
+.hero-cta {
+    margin-bottom: 18px
+}
+
+.hero-copy {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 30px
+}
+
+.hero-cta {
+    margin-top: auto;
+    margin-bottom: 0
+}
+
+.food-four {
+    right: 392px;
+    bottom: 31px;
+    transform: rotate(-8deg);
+    animation-delay: -.8s
+}
+
+.food-five {
+    right: 150px;
+    top: 14px;
+    transform: rotate(14deg);
+    animation-delay: -2.2s
+}
+
+.hero-cta {
+    margin-top: 40px;
+    margin-bottom: 24px
+}
+
+.hero-wrap {
+    height: 420px
+}
+
+.hero-copy {
+    height: 100%;
+    padding-bottom: 32px
+}
+
+.hero-cta {
+    margin-top: 32px;
+    margin-bottom: 0;
+    align-self: flex-start
+}
+
+@media(max-width:800px) {
+    .hero-wrap {
+        height: 410px
+    }
+}
+
+@media(max-width:520px) {
+    .hero-wrap {
+        height: 440px
+    }
+
+    .hero-copy {
+        padding-bottom: 28px
+    }
+
+    .hero-cta {
+        margin-top: 30px
+    }
+}
+
+.food-six {
+    right: 438px;
+    top: 160px;
+    transform: rotate(9deg);
+    animation-delay: -1.1s
+}
+
+.food-seven {
+    right: 72px;
+    bottom: 92px;
+    transform: rotate(-12deg);
+    animation-delay: -2.8s
+}
+
+.food-eight {
+    right: 470px;
+    bottom: 78px;
+    transform: rotate(-10deg);
+    animation-delay: -.5s
+}
+
+.food-nine {
+    right: 186px;
+    top: 104px;
+    transform: rotate(12deg);
+    animation-delay: -1.9s
+}
+
+.food-ten {
+    right: 16px;
+    bottom: 184px;
+    transform: rotate(-8deg);
+    animation-delay: -3.4s
+}
+
+.food-eleven {
+    right: 520px;
+    top: 165px;
+    transform: rotate(-9deg);
+    animation-delay: -1.7s
+}
+
+.food-twelve {
+    right: 505px;
+    top: 270px;
+    transform: rotate(8deg);
+    animation-delay: -3.7s
+}
+
+.floating-cart {
+    left: auto;
+    right: 28px;
+    transform: none
+}
+
+@media(max-width:600px) {
+    .floating-cart {
+        right: 18px;
+        left: auto;
+        transform: none
+    }
+}
+
+.hero-art .art-plate {
+    left: 44%;
+    right: auto;
+    top: 50%;
+    bottom: auto;
+    z-index: 3;
+    font-size: 190px;
+    transform: translate(-50%, -50%) rotate(-12deg)
+}
+
+.hero-art .hero-food {
+    left: 50%;
+    right: auto;
+    top: 50%;
+    bottom: auto;
+    width: 58px;
+    height: 58px;
+    transform: rotate(var(--orbit-angle)) translateY(-158px) rotate(calc(var(--orbit-angle) * -1));
+    z-index: 4
+}
+
+.hero-art .food-one {
+    --orbit-angle: 0deg
+}
+
+.hero-art .food-two {
+    --orbit-angle: 30deg
+}
+
+.hero-art .food-three {
+    --orbit-angle: 60deg
+}
+
+.hero-art .food-four {
+    --orbit-angle: 90deg
+}
+
+.hero-art .food-five {
+    --orbit-angle: 120deg
+}
+
+.hero-art .food-six {
+    --orbit-angle: 150deg
+}
+
+.hero-art .food-seven {
+    --orbit-angle: 180deg
+}
+
+.hero-art .food-eight {
+    --orbit-angle: 210deg
+}
+
+.hero-art .food-nine {
+    --orbit-angle: 240deg
+}
+
+.hero-art .food-ten {
+    --orbit-angle: 270deg
+}
+
+.hero-art .food-eleven {
+    --orbit-angle: 300deg
+}
+
+.hero-art .food-twelve {
+    --orbit-angle: 330deg
+}
+
+.hero-art .sun {
+    width: 430px;
+    height: 430px;
+    right: 50%;
+    top: 50%;
+    transform: translate(50%, -50%)
+}
+
+.hero-art .art-plate {
+    font-size: 230px
+}
+
+.hero-art .hero-food {
+    width: 54px;
+    height: 54px
+}
+
+.hero-art .food-one {
+    --orbit-angle: 0deg
+}
+
+.hero-art .food-two {
+    --orbit-angle: 22.5deg
+}
+
+.hero-art .food-three {
+    --orbit-angle: 45deg
+}
+
+.hero-art .food-four {
+    --orbit-angle: 67.5deg
+}
+
+.hero-art .food-five {
+    --orbit-angle: 90deg
+}
+
+.hero-art .food-six {
+    --orbit-angle: 112.5deg
+}
+
+.hero-art .food-seven {
+    --orbit-angle: 135deg
+}
+
+.hero-art .food-eight {
+    --orbit-angle: 157.5deg
+}
+
+.hero-art .food-nine {
+    --orbit-angle: 180deg
+}
+
+.hero-art .food-ten {
+    --orbit-angle: 202.5deg
+}
+
+.hero-art .food-eleven {
+    --orbit-angle: 225deg
+}
+
+.hero-art .food-twelve {
+    --orbit-angle: 247.5deg
+}
+
+.hero-art .food-thirteen {
+    --orbit-angle: 270deg
+}
+
+.hero-art .food-fourteen {
+    --orbit-angle: 292.5deg
+}
+
+.hero-art .food-fifteen {
+    --orbit-angle: 315deg
+}
+
+.hero-art .food-sixteen {
+    --orbit-angle: 337.5deg
+}
+
+.hero-art .art-plate-secondary {
+    left: 50%;
+    top: 57%;
+    z-index: 4;
+    font-size: 120px;
+    transform: translate(-50%, -50%) rotate(12deg)
+}
+
+.hero-art .art-plate-secondary {
+    font-size: 130px
+}
+
+.hero-art .hero-food {
+    display: grid
+}
+
+.hero-art .hero-food {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%
+}
+
+.hero-art .hero-food {
+    transform: rotate(var(--orbit-angle)) translateY(-150px) rotate(calc(var(--orbit-angle) * -1))
+}
+
+.hero-art .art-plate,
+.hero-art .art-plate-secondary {
+    font-size: 120px
+}
+
+.hero-art .food-one {
+    --orbit-angle: 0deg
+}
+
+.hero-art .food-two {
+    --orbit-angle: 36deg
+}
+
+.hero-art .food-three {
+    --orbit-angle: 72deg
+}
+
+.hero-art .food-four {
+    --orbit-angle: 108deg
+}
+
+.hero-art .food-five {
+    --orbit-angle: 144deg
+}
+
+.hero-art .food-six {
+    --orbit-angle: 180deg
+}
+
+.hero-art .food-seven {
+    --orbit-angle: 216deg
+}
+
+.hero-art .food-eight {
+    --orbit-angle: 252deg
+}
+
+.hero-art .food-nine {
+    --orbit-angle: 288deg
+}
+
+.hero-art .food-ten {
+    --orbit-angle: 324deg
+}
+
+.hero-art .food-eleven,
+.hero-art .food-twelve,
+.hero-art .food-thirteen,
+.hero-art .food-fourteen,
+.hero-art .food-fifteen,
+.hero-art .food-sixteen {
+    display: none
+}
+
+.hero-art .squiggle-two,
+.hero-art .squiggle-three,
+.hero-art .squiggle-four {
+    position: absolute;
+    color: var(--orange);
+    font-size: 52px;
+    line-height: 1;
+    pointer-events: none;
+    animation: squiggle-float 4s ease-in-out infinite
+}
+
+.hero-art .squiggle-two {
+    right: 310px;
+    top: 30px;
+    transform: rotate(14deg);
+    animation-delay: -1.2s
+}
+
+.hero-art .squiggle-three {
+    right: 455px;
+    bottom: 32px;
+    font-size: 62px;
+    transform: rotate(-12deg);
+    animation-delay: -2.4s
+}
+
+.hero-art .squiggle-four {
+    right: 215px;
+    bottom: 128px;
+    font-size: 44px;
+    transform: rotate(8deg);
+    animation-delay: -3.1s
+}
+
+@keyframes squiggle-float {
+
+    0%,
+    100% {
+        translate: 0 0
+    }
+
+    50% {
+        translate: 0 -7px
+    }
+}
+
+.hero-squiggle {
+    position: absolute;
+    z-index: 0;
+    color: var(--orange);
+    font-size: 48px;
+    line-height: 1;
+    pointer-events: none;
+    opacity: .9;
+    animation: squiggle-float 4.6s ease-in-out infinite
+}
+
+.hero-squiggle-one {
+    left: 28px;
+    top: 26px;
+    font-size: 42px;
+    transform: rotate(-14deg);
+    animation-delay: -.7s
+}
+
+.hero-squiggle-two {
+    left: 390px;
+    top: 28px;
+    font-size: 38px;
+    transform: rotate(11deg);
+    animation-delay: -2s
+}
+
+.hero-squiggle-three {
+    left: 520px;
+    bottom: 22px;
+    font-size: 56px;
+    transform: rotate(-8deg);
+    animation-delay: -3.2s
+}
+
+.hero-squiggle-four {
+    right: 360px;
+    top: 22px;
+    font-size: 40px;
+    transform: rotate(17deg);
+    animation-delay: -1.5s
+}
+
+.hero-squiggle-five {
+    right: 25px;
+    bottom: 30px;
+    font-size: 52px;
+    transform: rotate(-10deg);
+    animation-delay: -2.7s
+}
+
+.hero-art .hero-food {
+    left: 45%
+}
+
+.hero-art .hero-food {
+    top: 43%
+}
+
+.hero-art {
+    transform: none
+}
+
+/* Keep the two main food illustrations centered as one visual group. */
+.hero-art .art-plate {
+    left: calc(50% - 24px) !important;
+}
+
+.hero-art .art-plate-secondary {
+    left: calc(50% + 48px) !important;
+}
+
+.hero-art .art-plate {
+    top: calc(50% - 10px) !important;
+}
+
+.hero-art .art-plate-secondary {
+    top: calc(57% - 10px) !important;
+}
+
+/* Rotate each floating item so it points away from the centre. */
+.hero-art .hero-food {
+    transform: rotate(var(--orbit-angle)) translateY(-150px);
+}
+
+@keyframes hero-food-float {
+
+    0%,
+    100% {
+        transform: rotate(var(--orbit-angle)) translateY(-150px);
+    }
+
+    50% {
+        transform: rotate(var(--orbit-angle)) translateY(-162px);
+    }
+}
+
+/* Improve readability across the main customer page. */
+.hero-copy h1 {
+    font-size: 64px;
+}
+
+.hero-copy p {
+    font-size: 18px;
+}
+
+.hero-meta {
+    font-size: 13px;
+}
+
+.hero-cta {
+    font-size: 14px;
+}
+
+.kicker,
+.live-pill {
+    font-size: 12px;
+}
+
+.section-head h2 {
+    font-size: 32px;
+}
+
+.category span:last-child {
+    font-size: 14px;
+}
+
+.restaurant-info h3 {
+    font-size: 17px;
+}
+
+.restaurant-info p {
+    font-size: 13px;
+}
+
+.restaurant-meta {
+    font-size: 12px;
+}
+
+.menu-button {
+    font-size: 12px;
+}
+
+@media (max-width: 520px) {
+    .hero-copy h1 {
+        font-size: 48px;
+    }
+
+    .hero-copy p {
+        font-size: 16px;
+    }
+
+    .section-head h2 {
+        font-size: 28px;
+    }
+}
+
+.location {
+    position: relative;
+    cursor: pointer;
+}
+
+.location-menu {
+    position: absolute;
+    z-index: 20;
+    top: calc(100% + 14px);
+    left: 0;
+    width: min(360px, 80vw);
+    padding: 8px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: #fffefa;
+    box-shadow: 0 16px 35px #2119161f;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-6px);
+    transition: .18s ease;
+}
+
+.location.open .location-menu {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.location-option {
+    display: grid;
+    width: 100%;
+    gap: 4px;
+    padding: 10px;
+    border: 0;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--ink);
+    text-align: left;
+    cursor: pointer;
+}
+
+.location-option:hover {
+    background: #fff0e8;
+}
+
+.location-option strong {
+    font-size: 12px;
+}
+
+.location-option span {
+    overflow: hidden;
+    color: var(--muted);
+    font-size: 11px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.location-empty {
+    padding: 12px 10px;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+/* Additional zigzag accents. */
+.hero-wrap::after,
+.hero-art::after {
+    position: absolute;
+    z-index: 1;
+    content: "〰";
+    color: var(--orange);
+    font-size: 44px;
+    line-height: 1;
+    pointer-events: none;
+    opacity: .9;
+    animation: squiggle-float 4.6s ease-in-out infinite;
+}
+
+.hero-wrap::after {
+    left: 44%;
+    bottom: 22px;
+    transform: rotate(-10deg);
+    animation-delay: -1.1s;
+}
+
+.hero-art::after {
+    left: 13%;
+    top: 18%;
+    font-size: 38px;
+    transform: rotate(12deg);
+    animation-delay: -2.3s;
+}
+
+/* Six additional blue zigzag accents in varied artwork positions. */
+.hero-art::before {
+    position: absolute;
+    z-index: 1;
+    left: 18%;
+    top: 12%;
+    content: "〰";
+    color: #438bc5;
+    font-size: 32px;
+    line-height: 1;
+    pointer-events: none;
+    opacity: .85;
+    transform: rotate(-14deg);
+    text-shadow:
+        255px 34px 0 #438bc5,
+        410px 145px 0 #438bc5,
+        105px 255px 0 #438bc5,
+        335px 285px 0 #438bc5,
+        -70px 170px 0 #438bc5;
+}
+.topbar{height:104px}.brand-logo{width:116px!important;height:96px!important}
+.topbar{height:120px}.brand-logo{width:140px!important;height:112px!important}

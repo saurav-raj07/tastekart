@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TasteKart — Your profile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles/customer/base.css" />
+  <link rel="stylesheet" href="/styles/customer/auth.css" />
+  <link rel="stylesheet" href="/styles/customer/profile.css" />
+  <link rel="stylesheet" href="/styles/customer/address.css" />
+</head>
+<body>
+  <header class="topbar profile-topbar">
+    <a class="brand" href="/"><img class="brand-logo" src="/assets/tastekart_logo.png" alt="TasteKart" width="72" height="64" style="object-fit:contain" /></a>
+  </header>
+  <main class="profile-page"><a class="back-link profile-content-back" href="/">← Back to restaurants</a>
+    <section class="profile-hero"><span class="kicker">YOUR TASTEKART ACCOUNT</span><h1>Your profile</h1><p>Manage your details and keep track of every delicious order.</p></section>
+    <div id="profileLoading" class="profile-loading">Loading your profile…</div>
+    <div id="profileContent" hidden>
+      <section class="account-card" id="accountDetails"></section>
+      <section class="address-card"><div class="section-title"><div><span class="kicker">DELIVERY ADDRESSES</span><h2>Where should we deliver?</h2></div><button id="addAddressButton" class="primary-btn">Add address <span>＋</span></button></div><div id="savedAddresses" class="saved-addresses"></div><form id="addressForm" class="address-form" hidden><div class="address-search-wrap"><label for="addressSearch">Search your address</label><input id="addressSearch" required placeholder="Search building, street, area…" autocomplete="off" /><small id="addressHelp">Choose a Google Maps suggestion for the most accurate delivery location.</small></div><div class="address-grid"><input id="addressLabel" placeholder="Label (Home, Work)" value="Home" /><input id="addressHouse" placeholder="Flat / house number" /><input id="addressLandmark" placeholder="Landmark (optional)" /><input id="addressCity" placeholder="City" /><input id="addressPincode" placeholder="PIN code" /></div><div class="address-actions"><button type="button" id="cancelAddress" class="text-button">Cancel</button><button type="submit" class="primary-btn">Save address <span>→</span></button></div></form></section>
+      <section class="history-card"><div class="section-title"><div><span class="kicker">ORDER HISTORY</span><h2>Your previous orders</h2></div><a href="/" class="primary-btn">Order Agian <span>→</span></a></div><div id="orderHistory"></div></section>
+      <button id="profileLogout" class="logout-button">Logout</button>
+    </div>
+    <div id="profileError" class="profile-error" hidden></div>
+  </main>
+  <script src="/scripts/customer/profile.js"></script>
+</body>
+</html>
