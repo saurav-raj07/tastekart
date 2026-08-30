@@ -21,7 +21,7 @@ The backend runs as independently deployed FastAPI services behind the API gatew
 - `partner-service` (`3004`) — partner authentication, restaurant onboarding, menu management, and admin restaurant views
 - `app` (`3001`) — API gateway and static frontend host; it preserves the browser-facing `/api/...` contract
 
-Shared MongoDB collections and the JWT secret are used by the services for this local demo. In production, each service should own its data and communicate through authenticated service APIs or events rather than querying another service's collections directly.
+Shared MongoDB collections and the JWT secret are used by the services for this local demo. The gateway adds a private `SERVICE_TOKEN` when calling internal services, and services reject direct requests without it. In production, each service should own its data and communicate through authenticated service APIs or events rather than querying another service's collections directly; a data migration is required before enabling separate databases.
 
 Each service now has its own backend folder and `main.py` entrypoint under `backend/services/`:
 

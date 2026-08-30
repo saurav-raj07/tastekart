@@ -1,1 +1,26 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Order confirmed | TasteKart</title><link rel="stylesheet" href="/styles/customer/base.css"/><link rel="stylesheet" href="/styles/customer/cart.css"/></head><body><main class="congratulations-page"><div class="congratulations-card"><div class="congratulations-mark">✓</div><span class="kicker">ORDER CONFIRMED</span><h1>Congratulations!</h1><p>Your order has been placed successfully. We’re getting it ready with care.</p><strong id="confirmedOrder"></strong><div class="congratulations-actions"><a class="primary-btn" href="/">Go to main page</a><a class="secondary-btn" href="/orders">View your orders</a></div></div></main><script>const order=new URLSearchParams(location.search).get('order');if(order)document.querySelector('#confirmedOrder').textContent=`Order ${order}`;</script></body></html>
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Order confirmed | TasteKart</title>
+    <link rel="stylesheet" href="/styles/customer/base.css" />
+    <link rel="stylesheet" href="/styles/customer/cart.css" />
+</head>
+
+<body>
+    <main class="congratulations-page">
+        <div class="congratulations-card">
+            <div class="congratulations-mark">✓</div><span class="kicker">ORDER CONFIRMED</span>
+            <h1>Congratulations!</h1>
+            <p>Your order has been placed successfully. We’re getting it ready with care.</p><strong
+                id="confirmedOrder"></strong>
+            <div class="congratulations-actions"><a class="primary-btn" href="/">Go to main page</a><a
+                    class="secondary-btn" href="/orders">View your orders</a></div>
+        </div>
+    </main>
+    <script>const order = new URLSearchParams(location.search).get('order'); if (order) document.querySelector('#confirmedOrder').textContent = `Order ${order}`;</script>
+</body>
+
+</html>

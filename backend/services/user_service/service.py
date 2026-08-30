@@ -8,11 +8,12 @@ from uuid import uuid4
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.shared.core import MAPPLS_ACCESS_TOKEN, admins, clean_document, create_session, decode_token, http_error, initialize_database, password_digest, password_matches, partners, request_token, require_role, sessions, users
+from backend.shared.core import MAPPLS_ACCESS_TOKEN, admins, clean_document, create_session, decode_token, http_error, initialize_database, install_service_auth, password_digest, password_matches, partners, request_token, require_role, sessions, users
 from backend.shared.models import AddressRequest, AuthRequest
 
 app = FastAPI(title="TasteKart User Service")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+install_service_auth(app)
 
 
 @app.on_event("startup")

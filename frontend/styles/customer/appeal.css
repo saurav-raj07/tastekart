@@ -1078,5 +1078,21 @@ section {
         335px 285px 0 #438bc5,
         -70px 170px 0 #438bc5;
 }
-.topbar{height:104px}.brand-logo{width:116px!important;height:96px!important}
-.topbar{height:120px}.brand-logo{width:140px!important;height:112px!important}
+
+.topbar {
+    height: 104px
+}
+
+.brand-logo {
+    width: 116px !important;
+    height: 96px !important
+}
+
+.topbar {
+    height: 120px
+}
+
+.brand-logo {
+    width: 140px !important;
+    height: 112px !important
+}

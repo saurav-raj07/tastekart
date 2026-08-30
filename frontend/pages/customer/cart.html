@@ -1,3 +1,43 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Your cart | TasteKart</title><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/><link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet"/><link rel="stylesheet" href="/styles/customer/base.css"/><link rel="stylesheet" href="/styles/customer/menu.css"/><link rel="stylesheet" href="/styles/customer/cart.css"/></head>
-<body><header class="topbar"><a class="brand" href="/"><img class="brand-logo" src="/assets/tastekart_logo.png" alt="TasteKart" width="72" height="64" style="object-fit:contain"/></a><div class="header-actions cart-header-actions"><button class="icon-btn cart-header-button" aria-label="Cart">🛒</button></div></header><main class="cart-page"><a class="back-link cart-content-back" href="/">← Continue shopping</a><div class="cart-page-heading"><span class="kicker">YOUR ORDER</span><h1>Your cart</h1><p id="cartRestaurant"></p></div><section class="cart-page-card"><div id="cartPageItems" class="cart-page-items"></div><div class="cart-page-summary"><div class="bill-row"><span>Subtotal</span><strong id="cartPageSubtotal">₹0</strong></div><div class="bill-row muted"><span>Delivery fee</span><span id="cartPageFee">₹0</span></div><div class="bill-row total"><span>Total</span><strong id="cartPageTotal">₹0</strong></div><button id="cartPageCheckout" class="primary-btn full">Continue to checkout <span>→</span></button></div></section></main><div class="toast" id="toast"></div><script src="/scripts/customer/cart.js"></script></body></html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Your cart | TasteKart</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="/styles/customer/base.css" />
+    <link rel="stylesheet" href="/styles/customer/menu.css" />
+    <link rel="stylesheet" href="/styles/customer/cart.css" />
+</head>
+
+<body>
+    <header class="topbar"><a class="brand" href="/"><img class="brand-logo" src="/assets/tastekart_logo.png"
+                alt="TasteKart" width="72" height="64" style="object-fit:contain" /></a>
+        <div class="header-actions cart-header-actions"><button class="icon-btn cart-header-button"
+                aria-label="Cart">🛒</button></div>
+    </header>
+    <main class="cart-page"><a class="back-link cart-content-back" href="/">← Continue shopping</a>
+        <div class="cart-page-heading"><span class="kicker">YOUR ORDER</span>
+            <h1>Your cart</h1>
+            <p id="cartRestaurant"></p>
+        </div>
+        <section class="cart-page-card">
+            <div id="cartPageItems" class="cart-page-items"></div>
+            <div class="cart-page-summary">
+                <div class="bill-row"><span>Subtotal</span><strong id="cartPageSubtotal">₹0</strong></div>
+                <div class="bill-row muted"><span>Delivery fee</span><span id="cartPageFee">₹0</span></div>
+                <div class="bill-row total"><span>Total</span><strong id="cartPageTotal">₹0</strong></div><button
+                    id="cartPageCheckout" class="primary-btn full">Continue to checkout <span>→</span></button>
+            </div>
+        </section>
+    </main>
+    <div class="toast" id="toast"></div>
+    <script src="/scripts/customer/cart.js"></script>
+</body>
+
+</html>

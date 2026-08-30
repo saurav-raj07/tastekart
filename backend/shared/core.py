@@ -9,6 +9,7 @@ from uuid import UUID, uuid4
 
 import jwt
 from fastapi import HTTPException, Request
+from fastapi.responses import JSONResponse
 from pymongo import ASCENDING, DESCENDING, MongoClient
 
 MONGO_URL = os.getenv("MONGO_URL", "mongodb://localhost:27017")
@@ -17,6 +18,7 @@ JWT_SECRET = os.getenv("JWT_SECRET", "tastekart-development-secret-change-me")
 ADMIN_EMAIL = os.getenv("TASTEKART_ADMIN_EMAIL", "admin@tastekart.local").strip().lower()
 ADMIN_PASSWORD = os.getenv("TASTEKART_ADMIN_PASSWORD", "admin12345")
 MAPPLS_ACCESS_TOKEN = os.getenv("MAPPLS_ACCESS_TOKEN", "")
+SERVICE_TOKEN = os.getenv("SERVICE_TOKEN", "tastekart-internal-development-token")
 
 mongo_client = MongoClient(MONGO_URL, serverSelectionTimeoutMS=3000)
 database = mongo_client[MONGO_DB_NAME]
@@ -71,6 +73,15 @@ def decode_token(token: str) -> dict[str, Any]:
 
 def request_token(request: Request) -> str:
     return request.headers.get("authorization", "").removeprefix("Bearer ").strip()
+
+
+def install_service_auth(app) -> None:
+    """Require the gateway's private token on non-health service requests."""
+    @app.middleware("http")
+    async def service_auth(request: Request, call_next):
+        if request.url.path != "/health" and request.headers.get("x-service-token") != SERVICE_TOKEN:
+            return JSONResponse(status_code=401, content={"error": "Internal service authentication required"})
+        return await call_next(request)
 
 
 def require_role(request: Request, role: str) -> dict[str, Any]:

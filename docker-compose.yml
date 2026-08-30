@@ -16,6 +16,7 @@ services:
       MONGO_URL: mongodb://mongo:27017
       MONGO_DB_NAME: tastekart
       JWT_SECRET: change-this-secret-in-production
+      SERVICE_TOKEN: tastekart-internal-development-token
       MAPPLS_ACCESS_TOKEN: ${MAPPLS_ACCESS_TOKEN:-fsdskoezjmibcnwuceyychchwvcarbsryyah}
       TASTEKART_ADMIN_EMAIL: admin@tastekart.com
       TASTEKART_ADMIN_PASSWORD: Admin@123
@@ -31,6 +32,7 @@ services:
       MONGO_URL: mongodb://mongo:27017
       MONGO_DB_NAME: tastekart
       JWT_SECRET: change-this-secret-in-production
+      SERVICE_TOKEN: tastekart-internal-development-token
     depends_on:
       - mongo
     command: ["uvicorn", "backend.services.catalog_service.main:app", "--host", "0.0.0.0", "--port", "3005"]
@@ -43,6 +45,7 @@ services:
       MONGO_URL: mongodb://mongo:27017
       MONGO_DB_NAME: tastekart
       JWT_SECRET: change-this-secret-in-production
+      SERVICE_TOKEN: tastekart-internal-development-token
     depends_on:
       - mongo
     command: ["uvicorn", "backend.services.order_service.main:app", "--host", "0.0.0.0", "--port", "3003"]
@@ -55,6 +58,7 @@ services:
       MONGO_URL: mongodb://mongo:27017
       MONGO_DB_NAME: tastekart
       JWT_SECRET: change-this-secret-in-production
+      SERVICE_TOKEN: tastekart-internal-development-token
     depends_on:
       - mongo
     command: ["uvicorn", "backend.services.partner_service.main:app", "--host", "0.0.0.0", "--port", "3004"]
@@ -68,6 +72,7 @@ services:
       ORDER_SERVICE_URL: http://order-service:3003
       PARTNER_SERVICE_URL: http://partner-service:3004
       CATALOG_SERVICE_URL: http://catalog-service:3005
+      SERVICE_TOKEN: tastekart-internal-development-token
     depends_on:
       - user-service
       - catalog-service

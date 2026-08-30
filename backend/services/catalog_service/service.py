@@ -1,11 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.shared.core import clean_document, initialize_database, menu_items, restaurants_collection
+from backend.shared.core import clean_document, initialize_database, install_service_auth, menu_items, restaurants_collection
 from backend.shared.models import OrderRequest
 
 app = FastAPI(title="TasteKart Catalog Service")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
+install_service_auth(app)
 
 @app.on_event("startup")
 def startup():

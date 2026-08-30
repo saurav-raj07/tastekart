@@ -13,6 +13,7 @@ USER_SERVICE_URL = os.getenv("USER_SERVICE_URL", "http://user-service:3002")
 ORDER_SERVICE_URL = os.getenv("ORDER_SERVICE_URL", "http://order-service:3003")
 PARTNER_SERVICE_URL = os.getenv("PARTNER_SERVICE_URL", "http://partner-service:3004")
 CATALOG_SERVICE_URL = os.getenv("CATALOG_SERVICE_URL", "http://catalog-service:3005")
+SERVICE_TOKEN = os.getenv("SERVICE_TOKEN", "tastekart-internal-development-token")
 
 app = FastAPI(title="TasteKart API Gateway", version="2.0.0")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
@@ -48,6 +49,7 @@ async def api_proxy(path: str, request: Request):
     url = f"{service}/{upstream_path}"
     body = await request.body()
     headers = {key: value for key, value in request.headers.items() if key.lower() not in {"host", "content-length"}}
+    headers["x-service-token"] = SERVICE_TOKEN
     try:
         async with httpx.AsyncClient(timeout=30) as client:
             upstream = await client.request(request.method, url, params=request.query_params, content=body, headers=headers)
@@ -64,7 +66,7 @@ async def health():
     async with httpx.AsyncClient(timeout=3) as client:
         for name, url in services.items():
             try:
-                response = await client.get(f"{url}/health")
+                response = await client.get(f"{url}/health", headers={"x-service-token": SERVICE_TOKEN})
                 result[name] = response.status_code == 200
             except httpx.HTTPError:
                 result[name] = False
