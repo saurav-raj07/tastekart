@@ -10,26 +10,15 @@ from uuid import UUID, uuid4
 import jwt
 from fastapi import HTTPException, Request
 from fastapi.responses import JSONResponse
-from pymongo import ASCENDING, DESCENDING, MongoClient
+from pymongo import ASCENDING, DESCENDING
 
-MONGO_URL = os.getenv("MONGO_URL", "mongodb://localhost:27017")
-MONGO_DB_NAME = os.getenv("MONGO_DB_NAME", "tastekart")
+from backend.database import admins, database, menu_items, mongo_client, orders, partners, restaurants_collection, sessions, users
+
 JWT_SECRET = os.getenv("JWT_SECRET", "tastekart-development-secret-change-me")
 ADMIN_EMAIL = os.getenv("TASTEKART_ADMIN_EMAIL", "admin@tastekart.local").strip().lower()
 ADMIN_PASSWORD = os.getenv("TASTEKART_ADMIN_PASSWORD", "admin12345")
 MAPPLS_ACCESS_TOKEN = os.getenv("MAPPLS_ACCESS_TOKEN", "")
 SERVICE_TOKEN = os.getenv("SERVICE_TOKEN", "tastekart-internal-development-token")
-
-mongo_client = MongoClient(MONGO_URL, serverSelectionTimeoutMS=3000)
-database = mongo_client[MONGO_DB_NAME]
-users = database.users
-restaurants_collection = database.restaurants
-menu_items = database.menu_items
-orders = database.orders
-partners = database.partners
-admins = database.admins
-sessions = database.sessions
-
 
 def http_error(message: str, status_code: int = 400) -> HTTPException:
     return HTTPException(status_code=status_code, detail=message)

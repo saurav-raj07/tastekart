@@ -28,7 +28,8 @@ Each service now has its own backend folder and `main.py` entrypoint under `back
 ```text
 backend/
 ├── app/                         # API gateway
-├── shared/                      # shared database, auth, and models
+├── database/                    # MongoDB connection and collection handles
+├── shared/                      # shared auth, middleware, and models
 └── services/
     ├── user_service/main.py
     ├── catalog_service/main.py
