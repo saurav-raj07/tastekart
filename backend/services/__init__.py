@@ -1,0 +1,1 @@
+"""TasteKart microservices."""

@@ -13,12 +13,28 @@ An India-focused food delivery demo for local development. The frontend is a van
 
 ## Services
 
-The service boundaries live in `backend/app/main.py` for this compact demo:
+The backend runs as independently deployed FastAPI services behind the API gateway:
 
-- `userService` — creates or updates a local customer profile
-- `checkout` — previews subtotal, delivery fee, and total
-- `orderService` — validates menu items and creates an order transaction
-- `paymentService` — confirms payment and advances the order to `CONFIRMED`
+- `user-service` (`3002`) — customer/admin authentication, profiles, addresses, sessions, and Mappls lookup
+- `catalog-service` (`3005`) — restaurant menus and checkout previews
+- `order-service` (`3003`) — order creation, order history, payments, and customer/partner order status transitions
+- `partner-service` (`3004`) — partner authentication, restaurant onboarding, menu management, and admin restaurant views
+- `app` (`3001`) — API gateway and static frontend host; it preserves the browser-facing `/api/...` contract
+
+Shared MongoDB collections and the JWT secret are used by the services for this local demo. In production, each service should own its data and communicate through authenticated service APIs or events rather than querying another service's collections directly.
+
+Each service now has its own backend folder and `main.py` entrypoint under `backend/services/`:
+
+```text
+backend/
+├── app/                         # API gateway
+├── shared/                      # shared database, auth, and models
+└── services/
+    ├── user_service/main.py
+    ├── catalog_service/main.py
+    ├── order_service/main.py
+    └── partner_service/main.py
+```
 
 ## Run locally
 
@@ -35,7 +51,7 @@ pip install -r backend/requirements.txt
 MONGO_URL=mongodb://localhost:27017 MONGO_DB_NAME=tastekart JWT_SECRET=change-this-secret uvicorn backend.app.main:app --host 0.0.0.0 --port 3001
 ```
 
-MongoDB collections and indexes are initialized automatically on first startup, and the six demo restaurants and menus are seeded when the database is empty.
+MongoDB indexes and the default admin account are initialized automatically by the services on startup. The named Docker volume persists users, partner accounts, restaurants, menus, sessions, and orders across restarts.
 
 MongoDB uses the named Docker volume `tastekart_mongo_data`, so users, partner accounts, restaurants, menus, sessions, and orders survive container restarts and recreations. Remove that volume only when intentionally resetting local data.
 

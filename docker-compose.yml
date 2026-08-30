@@ -6,7 +6,7 @@ services:
     volumes:
       - tastekart_mongo_data:/data/db
 
-  app:
+  user-service:
     build:
       context: .
       dockerfile: Dockerfile
@@ -21,6 +21,59 @@ services:
       TASTEKART_ADMIN_PASSWORD: Admin@123
     depends_on:
       - mongo
+    command: ["uvicorn", "backend.services.user_service.main:app", "--host", "0.0.0.0", "--port", "3002"]
+
+  catalog-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      MONGO_URL: mongodb://mongo:27017
+      MONGO_DB_NAME: tastekart
+      JWT_SECRET: change-this-secret-in-production
+    depends_on:
+      - mongo
+    command: ["uvicorn", "backend.services.catalog_service.main:app", "--host", "0.0.0.0", "--port", "3005"]
+
+  order-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      MONGO_URL: mongodb://mongo:27017
+      MONGO_DB_NAME: tastekart
+      JWT_SECRET: change-this-secret-in-production
+    depends_on:
+      - mongo
+    command: ["uvicorn", "backend.services.order_service.main:app", "--host", "0.0.0.0", "--port", "3003"]
+
+  partner-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      MONGO_URL: mongodb://mongo:27017
+      MONGO_DB_NAME: tastekart
+      JWT_SECRET: change-this-secret-in-production
+    depends_on:
+      - mongo
+    command: ["uvicorn", "backend.services.partner_service.main:app", "--host", "0.0.0.0", "--port", "3004"]
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      USER_SERVICE_URL: http://user-service:3002
+      ORDER_SERVICE_URL: http://order-service:3003
+      PARTNER_SERVICE_URL: http://partner-service:3004
+      CATALOG_SERVICE_URL: http://catalog-service:3005
+    depends_on:
+      - user-service
+      - catalog-service
+      - order-service
+      - partner-service
+    command: ["uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "3001"]
     ports:
       - "3001:3001"
 
