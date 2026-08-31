@@ -1,3 +1,4 @@
+import json
 import os
 from pathlib import Path
 
@@ -56,7 +57,20 @@ async def api_proxy(path: str, request: Request):
     except httpx.HTTPError:
         return Response('{"error":"Service unavailable"}', status_code=503, media_type="application/json")
     response_headers = {key: value for key, value in upstream.headers.items() if key.lower() not in {"content-encoding", "transfer-encoding", "connection"}}
-    return Response(upstream.content, status_code=upstream.status_code, headers=response_headers, media_type=upstream.headers.get("content-type"))
+    content = upstream.content
+    content_type = upstream.headers.get("content-type", "")
+    if upstream.status_code >= 400 and content_type.startswith("application/json"):
+        try:
+            payload = upstream.json()
+            if "error" not in payload and "detail" in payload:
+                detail = payload["detail"]
+                if isinstance(detail, list):
+                    detail = "; ".join(str(item.get("msg", item)) if isinstance(item, dict) else str(item) for item in detail)
+                content = json.dumps({"error": detail}).encode("utf-8")
+
+        except (ValueError, TypeError):
+            pass
+    return Response(content, status_code=upstream.status_code, headers=response_headers, media_type=content_type or None)
 
 
 @app.get("/api/health")
