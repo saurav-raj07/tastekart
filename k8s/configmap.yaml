@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tastekart-config
+  namespace: tastekart
+  labels:
+    app.kubernetes.io/name: tastekart-config
+    app.kubernetes.io/part-of: tastekart-platform
+data:
+  MONGO_DB_NAME: "tastekart"
+  NODE_ENV: "production"
+  USER_SERVICE_URL: "http://user-service:3002"
+  ORDER_SERVICE_URL: "http://order-service:3003"
+  PARTNER_SERVICE_URL: "http://partner-service:3004"
+  CATALOG_SERVICE_URL: "http://catalog-service:3005"

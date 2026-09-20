@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog-service
+  namespace: tastekart
+  labels:
+    app: catalog-service
+    app.kubernetes.io/name: catalog-service
+    app.kubernetes.io/part-of: tastekart-platform
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: catalog-service
+  template:
+    metadata:
+      labels:
+        app: catalog-service
+    spec:
+      containers:
+        - name: catalog-service
+          image: tastekart/backend:latest
+          imagePullPolicy: Always
+          command: ["uvicorn", "backend.services.catalog_service.main:app", "--host", "0.0.0.0", "--port", "3005"]
+          ports:
+            - containerPort: 3005
+              name: http
+          envFrom:
+            - configMapRef:
+                name: tastekart-config
+            - secretRef:
+                name: tastekart-secret
+          env:
+            - name: PORT
+              value: "3005"
+          readinessProbe:
+            tcpSocket:
+              port: 3005
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            tcpSocket:
+              port: 3005
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalog-service
+  namespace: tastekart
+  labels:
+    app: catalog-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3005
+      targetPort: 3005
+      name: http
+  selector:
+    app: catalog-service

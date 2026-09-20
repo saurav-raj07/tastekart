@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-gateway
+  namespace: tastekart
+  labels:
+    app: app-gateway
+    app.kubernetes.io/name: app-gateway
+    app.kubernetes.io/part-of: tastekart-platform
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: app-gateway
+  template:
+    metadata:
+      labels:
+        app: app-gateway
+    spec:
+      containers:
+        - name: app-gateway
+          image: tastekart/backend:latest
+          imagePullPolicy: Always
+          command: ["uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "3001"]
+          ports:
+            - containerPort: 3001
+              name: http
+          envFrom:
+            - configMapRef:
+                name: tastekart-config
+            - secretRef:
+                name: tastekart-secret
+          env:
+            - name: PORT
+              value: "3001"
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3001
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 3001
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 150m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-gateway
+  namespace: tastekart
+  labels:
+    app: app-gateway
+spec:
+  type: NodePort
+  ports:
+    - port: 3001
+      targetPort: 3001
+      nodePort: 30001
+      name: http
+  selector:
+    app: app-gateway
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tastekart-ingress
+  namespace: tastekart
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+    - host: tastekart.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: app-gateway
+                port:
+                  number: 3001

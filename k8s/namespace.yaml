@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tastekart
+  labels:
+    app.kubernetes.io/name: tastekart
+    app.kubernetes.io/part-of: tastekart-platform

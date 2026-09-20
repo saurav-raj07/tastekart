@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: partner-service
+  namespace: tastekart
+  labels:
+    app: partner-service
+    app.kubernetes.io/name: partner-service
+    app.kubernetes.io/part-of: tastekart-platform
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: partner-service
+  template:
+    metadata:
+      labels:
+        app: partner-service
+    spec:
+      containers:
+        - name: partner-service
+          image: tastekart/backend:latest
+          imagePullPolicy: Always
+          command: ["uvicorn", "backend.services.partner_service.main:app", "--host", "0.0.0.0", "--port", "3004"]
+          ports:
+            - containerPort: 3004
+              name: http
+          envFrom:
+            - configMapRef:
+                name: tastekart-config
+            - secretRef:
+                name: tastekart-secret
+          env:
+            - name: PORT
+              value: "3004"
+          readinessProbe:
+            tcpSocket:
+              port: 3004
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            tcpSocket:
+              port: 3004
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: partner-service
+  namespace: tastekart
+  labels:
+    app: partner-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3004
+      targetPort: 3004
+      name: http
+  selector:
+    app: partner-service
