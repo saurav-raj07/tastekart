@@ -1,0 +1,43 @@
+services:
+  user-service:
+    image: ${ECR_REGISTRY}/tastekart-user-service:${IMAGE_TAG:-latest}
+    environment:
+      MONGO_URL: ${MONGO_URL:?Set MONGO_URL to the private MongoDB EC2 connection string}
+      MONGO_DB_NAME: ${MONGO_DB_NAME:-tastekart}
+      JWT_SECRET: ${JWT_SECRET}
+      SERVICE_TOKEN: ${SERVICE_TOKEN}
+      MAPPLS_ACCESS_TOKEN: ${MAPPLS_ACCESS_TOKEN:-}
+      TASTEKART_ADMIN_EMAIL: ${TASTEKART_ADMIN_EMAIL}
+      TASTEKART_ADMIN_PASSWORD: ${TASTEKART_ADMIN_PASSWORD}
+
+  catalog-service:
+    image: ${ECR_REGISTRY}/tastekart-catalog-service:${IMAGE_TAG:-latest}
+    environment: &backend-environment
+      MONGO_URL: ${MONGO_URL:?Set MONGO_URL to the private MongoDB EC2 connection string}
+      MONGO_DB_NAME: ${MONGO_DB_NAME:-tastekart}
+      JWT_SECRET: ${JWT_SECRET}
+      SERVICE_TOKEN: ${SERVICE_TOKEN}
+
+  order-service:
+    image: ${ECR_REGISTRY}/tastekart-order-service:${IMAGE_TAG:-latest}
+    environment: *backend-environment
+
+  partner-service:
+    image: ${ECR_REGISTRY}/tastekart-partner-service:${IMAGE_TAG:-latest}
+    environment: *backend-environment
+
+  app:
+    image: ${ECR_REGISTRY}/tastekart-app:${IMAGE_TAG:-latest}
+    environment:
+      USER_SERVICE_URL: http://user-service:3002
+      ORDER_SERVICE_URL: http://order-service:3003
+      PARTNER_SERVICE_URL: http://partner-service:3004
+      CATALOG_SERVICE_URL: http://catalog-service:3005
+      SERVICE_TOKEN: ${SERVICE_TOKEN}
+    depends_on:
+      - user-service
+      - catalog-service
+      - order-service
+      - partner-service
+    ports:
+      - "3001:3001"
