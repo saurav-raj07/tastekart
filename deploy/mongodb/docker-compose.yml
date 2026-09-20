@@ -1,0 +1,15 @@
+services:
+  mongo:
+    image: mongo:8.0
+    container_name: tastekart-mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME:?Set the MongoDB root username in .env}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD:?Set the MongoDB root password in .env}
+    ports:
+      - "27017:27017"
+    volumes:
+      - tastekart_mongo_data:/data/db
+
+volumes:
+  tastekart_mongo_data:

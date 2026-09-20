@@ -1,45 +1,129 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>TasteKart — food, delivered warm</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="/styles/customer/base.css" />
   <link rel="stylesheet" href="/styles/customer/menu.css" />
   <link rel="stylesheet" href="/styles/customer/appeal.css?v=20260830-center-v2" />
   <link rel="stylesheet" href="/styles/customer/auth.css" />
 </head>
+
 <body>
   <header class="topbar">
-    <a class="brand" href="#"><img class="brand-logo" src="/assets/tastekart_logo.png" alt="TasteKart" width="72" height="64" style="object-fit:contain" /></a>
-    <div class="location"><span class="pin">⌖</span><span><small>DELIVERING TO</small><strong id="locationLabel">Choose an address</strong></span><span class="chevron">⌄</span></div>
-    <div class="header-actions"><button class="icon-btn" aria-label="Search">⌕</button><button id="cartButton" class="icon-btn cart-header-button" aria-label="Open cart" onclick="window.location.href='/cart'">🛒</button><button id="profileButton" class="profile-button"><span id="profileInitial">?</span><span id="profileName">Log in</span><span>⌄</span></button></div>
+    <a class="brand" href="#"><img class="brand-logo" src="/assets/tastekart_logo.png" alt="TasteKart" width="72"
+        height="64" style="object-fit:contain" /></a>
+    <div class="location"><span class="pin">⌖</span><span><small>DELIVERING TO</small><strong id="locationLabel">Choose
+          an address</strong></span><span class="chevron">⌄</span></div>
+    <div class="header-actions"><button class="icon-btn" aria-label="Search">⌕</button><button id="cartButton"
+        class="icon-btn cart-header-button" aria-label="Open cart"
+        onclick="window.location.href='/cart'">🛒</button><button id="profileButton" class="profile-button"><span
+          id="profileInitial">?</span><span id="profileName">Log in</span><span>⌄</span></button></div>
   </header>
 
   <main>
     <section class="hero-wrap">
-      <div class="hero-copy"><div class="live-pill"><i></i> LIVE IN YOUR NEIGHBOURHOOD</div><h1>Good food.<br /><em>Good mood.</em></h1><p>Handpicked favourites, delivered to your door.</p><div class="hero-meta"><span>⚡ 30 min average</span><span>✦ No surge fee today</span></div><button class="hero-cta" onclick="document.querySelector('.restaurant-heading').scrollIntoView({behavior:'smooth'})">Explore restaurants <span>↗</span></button></div>
-      <div class="hero-art"><div class="hero-glow"></div><div class="sun"></div><div class="hero-food food-one">🍕</div><div class="hero-food food-two">🥗</div><div class="hero-food food-three">🍔</div><div class="hero-food food-four">🍜</div><div class="hero-food food-five">🧁</div><div class="hero-food food-six">🍣</div><div class="hero-food food-seven">🍩</div><div class="hero-food food-eight">🍱</div><div class="hero-food food-nine">🍦</div><div class="hero-food food-ten">🌮</div><div class="hero-food food-eleven">🍜</div><div class="hero-food food-twelve">🍲</div><div class="hero-food food-thirteen">🍤</div><div class="hero-food food-fourteen">🥞</div><div class="hero-food food-fifteen">🍰</div><div class="hero-food food-sixteen">🥪</div><div class="art-plate">🍟</div><div class="art-plate art-plate-secondary">🍿</div><div class="squiggle">〰</div><div class="squiggle squiggle-two">〰</div><div class="squiggle squiggle-three">〰</div><div class="squiggle squiggle-four">〰</div></div><div class="hero-squiggle hero-squiggle-one">〰</div><div class="hero-squiggle hero-squiggle-two">〰</div><div class="hero-squiggle hero-squiggle-three">〰</div><div class="hero-squiggle hero-squiggle-four">〰</div><div class="hero-squiggle hero-squiggle-five">〰</div>
+      <div class="hero-copy">
+        <div class="live-pill"><i></i> LIVE IN YOUR NEIGHBOURHOOD</div>
+        <h1>Good food.<br /><em>Good mood.</em></h1>
+        <p>Handpicked favourites, delivered to your door.</p>
+        <div class="hero-meta"><span>⚡ 30 min average</span><span>✦ No surge fee today</span></div><button
+          class="hero-cta"
+          onclick="document.querySelector('.restaurant-heading').scrollIntoView({behavior:'smooth'})">Explore
+          restaurants <span>↗</span></button>
+      </div>
+      <div class="hero-art">
+        <div class="hero-glow"></div>
+        <div class="sun"></div>
+        <div class="hero-food food-one">🍕</div>
+        <div class="hero-food food-two">🥗</div>
+        <div class="hero-food food-three">🍔</div>
+        <div class="hero-food food-four">🍜</div>
+        <div class="hero-food food-five">🧁</div>
+        <div class="hero-food food-six">🍣</div>
+        <div class="hero-food food-seven">🍩</div>
+        <div class="hero-food food-eight">🍱</div>
+        <div class="hero-food food-nine">🍦</div>
+        <div class="hero-food food-ten">🌮</div>
+        <div class="hero-food food-eleven">🍜</div>
+        <div class="hero-food food-twelve">🍲</div>
+        <div class="hero-food food-thirteen">🍤</div>
+        <div class="hero-food food-fourteen">🥞</div>
+        <div class="hero-food food-fifteen">🍰</div>
+        <div class="hero-food food-sixteen">🥪</div>
+        <div class="art-plate">🍟</div>
+        <div class="art-plate art-plate-secondary">🍿</div>
+        <div class="squiggle">〰</div>
+        <div class="squiggle squiggle-two">〰</div>
+        <div class="squiggle squiggle-three">〰</div>
+        <div class="squiggle squiggle-four">〰</div>
+      </div>
+      <div class="hero-squiggle hero-squiggle-one">〰</div>
+      <div class="hero-squiggle hero-squiggle-two">〰</div>
+      <div class="hero-squiggle hero-squiggle-three">〰</div>
+      <div class="hero-squiggle hero-squiggle-four">〰</div>
+      <div class="hero-squiggle hero-squiggle-five">〰</div>
     </section>
 
-    <div class="trust-strip"><span><b>4.8/5</b> average rating</span><span><b>200+</b> local favourites</span><span><b>₹0</b> surge fee today</span><span class="trust-dot">●</span></div>
+    <div class="trust-strip"><span><b>4.8/5</b> average rating</span><span><b>200+</b> local
+        favourites</span><span><b>₹0</b> surge fee today</span><span class="trust-dot">●</span></div>
 
-    <section class="section-head"><div><span class="kicker">EXPLORE</span><h2>What are you craving?</h2></div><button class="text-button" id="viewAllCategories">View all <span>→</span></button></section>
+    <section class="section-head">
+      <div><span class="kicker">EXPLORE</span>
+        <h2>What are you craving?</h2>
+      </div><button class="text-button" id="viewAllCategories">View all <span>→</span></button>
+    </section>
     <div class="category-row" id="categoryRow"></div>
 
-    <section class="section-head restaurant-heading"><div><span class="kicker">NEAR YOU</span><h2>Popular around you</h2><p class="subcopy">Top-rated spots delivering to your saved address</p></div><div class="filter-pills"><button class="filter active">All</button><button class="filter">Under 30 min</button><button class="filter">Offers</button></div></section>
+    <section class="section-head restaurant-heading">
+      <div><span class="kicker">NEAR YOU</span>
+        <h2>Popular around you</h2>
+        <p class="subcopy">Top-rated spots delivering to your saved address</p>
+      </div>
+      <div class="filter-pills"><button class="filter active">All</button><button class="filter">Under 30
+          min</button><button class="filter">Offers</button></div>
+    </section>
     <div class="restaurant-grid" id="restaurantGrid"></div>
   </main>
 
-  <aside class="cart-drawer" id="cartDrawer"><div class="drawer-head"><div><span class="kicker">YOUR ORDER</span><h2>Cart <span id="cartCount">0</span></h2></div><button class="close-btn" id="closeCart">×</button></div><div id="cartItems" class="cart-items"></div><div class="cart-footer"><div class="bill-row"><span>Subtotal</span><strong id="subtotal">₹0</strong></div><div class="bill-row muted"><span>Delivery fee</span><span id="deliveryFee">₹0</span></div><div class="bill-row total"><span>Total</span><strong id="total">₹0</strong></div><button id="checkoutButton" class="primary-btn full">Continue to checkout <span>→</span></button></div></aside>
-  <div class="menu-modal" id="menuModal"><div class="menu-panel"><div class="drawer-head"><div><span class="kicker">RESTAURANT MENU</span><h2 id="menuTitle">Menu</h2><p id="menuSubtitle" class="subcopy"></p></div><button class="close-btn" id="closeMenu">×</button></div><div id="menuItems" class="menu-items"></div></div></div>
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="drawer-head">
+      <div><span class="kicker">YOUR ORDER</span>
+        <h2>Cart <span id="cartCount">0</span></h2>
+      </div><button class="close-btn" id="closeCart">×</button>
+    </div>
+    <div id="cartItems" class="cart-items"></div>
+    <div class="cart-footer">
+      <div class="bill-row"><span>Subtotal</span><strong id="subtotal">₹0</strong></div>
+      <div class="bill-row muted"><span>Delivery fee</span><span id="deliveryFee">₹0</span></div>
+      <div class="bill-row total"><span>Total</span><strong id="total">₹0</strong></div><button id="checkoutButton"
+        class="primary-btn full">Continue to checkout <span>→</span></button>
+    </div>
+  </aside>
+  <div class="menu-modal" id="menuModal">
+    <div class="menu-panel">
+      <div class="drawer-head">
+        <div><span class="kicker">RESTAURANT MENU</span>
+          <h2 id="menuTitle">Menu</h2>
+          <p id="menuSubtitle" class="subcopy"></p>
+        </div><button class="close-btn" id="closeMenu">×</button>
+      </div>
+      <div id="menuItems" class="menu-items"></div>
+    </div>
+  </div>
   <div class="scrim" id="scrim"></div>
-  <button class="floating-cart" id="openCart"><span>🛍</span><span id="floatingCount">0</span><b id="floatingTotal">₹0</b></button>
+  <button class="floating-cart" id="openCart"><span>🛍</span><span id="floatingCount">0</span><b
+      id="floatingTotal">₹0</b></button>
   <div class="toast" id="toast"></div>
   <script src="/scripts/customer/app.js"></script>
   <script src="/scripts/customer/login-redirect.js"></script>
 </body>
+
 </html>
