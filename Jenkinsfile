@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        // AWS ECR Configuration - Update AWS_ACCOUNT_ID and AWS_REGION to match your AWS setup
-        AWS_ACCOUNT_ID   = '123456789012'
-        AWS_REGION       = 'us-east-1'
+        // AWS ECR Configuration
+        AWS_ACCOUNT_ID   = '305042756398'
+        AWS_REGION       = 'ap-south-1'
         ECR_REPO_NAME    = 'tastekart-backend'
         ECR_REGISTRY     = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
         
@@ -78,7 +78,7 @@ pipeline {
                 script {
                     echo "Deploying to Kubernetes namespace: ${KUBE_NAMESPACE}"
                     
-                    // Apply Kubernetes manifests
+                    // Apply Kubernetes manifests (including in-cluster MongoDB)
                     sh 'kubectl apply -f k8s/namespace.yaml'
                     sh 'kubectl apply -f k8s/configmap.yaml'
                     sh 'kubectl apply -f k8s/secret.yaml'

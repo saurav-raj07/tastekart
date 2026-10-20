@@ -1,0 +1,489 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tastekart
+  labels:
+    app.kubernetes.io/name: tastekart
+    app.kubernetes.io/part-of: tastekart-platform
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tastekart-config
+  namespace: tastekart
+  labels:
+    app.kubernetes.io/name: tastekart-config
+    app.kubernetes.io/part-of: tastekart-platform
+data:
+  MONGO_DB_NAME: "tastekart"
+  NODE_ENV: "production"
+  USER_SERVICE_URL: "http://user-service:3002"
+  ORDER_SERVICE_URL: "http://order-service:3003"
+  PARTNER_SERVICE_URL: "http://partner-service:3004"
+  CATALOG_SERVICE_URL: "http://catalog-service:3005"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: tastekart-secret
+  namespace: tastekart
+  labels:
+    app.kubernetes.io/name: tastekart-secret
+    app.kubernetes.io/part-of: tastekart-platform
+type: Opaque
+stringData:
+  # In-cluster MongoDB service (deployed via k8s/mongodb.yaml)
+  MONGO_URL: "mongodb://mongodb:27017"
+  JWT_SECRET: "prod-jwt-secret-replace-in-pipeline"
+  SERVICE_TOKEN: "tastekart-internal-service-token-secret"
+  TASTEKART_ADMIN_EMAIL: "admin@tastekart.com"
+  TASTEKART_ADMIN_PASSWORD: "ChangeMeAdmin123!"
+  MAPPLS_ACCESS_TOKEN: ""
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-pvc
+  namespace: tastekart
+  labels:
+    app: mongodb
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb
+  namespace: tastekart
+  labels:
+    app: mongodb
+    app.kubernetes.io/name: mongodb
+    app.kubernetes.io/part-of: tastekart-platform
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+        - name: mongodb
+          image: mongo:7.0
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: mongodb-data
+              mountPath: /data/db
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+      volumes:
+        - name: mongodb-data
+          persistentVolumeClaim:
+            claimName: mongodb-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb
+  namespace: tastekart
+  labels:
+    app: mongodb
+spec:
+  type: ClusterIP
+  ports:
+    - port: 27017
+      targetPort: 27017
+      name: mongodb
+  selector:
+    app: mongodb
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service
+  namespace: tastekart
+  labels:
+    app: user-service
+    app.kubernetes.io/name: user-service
+    app.kubernetes.io/part-of: tastekart-platform
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: user-service
+  template:
+    metadata:
+      labels:
+        app: user-service
+    spec:
+      imagePullSecrets:
+        - name: ecr-secret
+      containers:
+        - name: user-service
+          image: 305042756398.dkr.ecr.ap-south-1.amazonaws.com/tastekart-backend:latest
+          imagePullPolicy: Always
+          command: ["uvicorn", "backend.services.user_service.main:app", "--host", "0.0.0.0", "--port", "3002"]
+          ports:
+            - containerPort: 3002
+              name: http
+          envFrom:
+            - configMapRef:
+                name: tastekart-config
+            - secretRef:
+                name: tastekart-secret
+          env:
+            - name: PORT
+              value: "3002"
+          readinessProbe:
+            tcpSocket:
+              port: 3002
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            tcpSocket:
+              port: 3002
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service
+  namespace: tastekart
+  labels:
+    app: user-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3002
+      targetPort: 3002
+      name: http
+  selector:
+    app: user-service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog-service
+  namespace: tastekart
+  labels:
+    app: catalog-service
+    app.kubernetes.io/name: catalog-service
+    app.kubernetes.io/part-of: tastekart-platform
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: catalog-service
+  template:
+    metadata:
+      labels:
+        app: catalog-service
+    spec:
+      imagePullSecrets:
+        - name: ecr-secret
+      containers:
+        - name: catalog-service
+          image: 305042756398.dkr.ecr.ap-south-1.amazonaws.com/tastekart-backend:latest
+          imagePullPolicy: Always
+          command: ["uvicorn", "backend.services.catalog_service.main:app", "--host", "0.0.0.0", "--port", "3005"]
+          ports:
+            - containerPort: 3005
+              name: http
+          envFrom:
+            - configMapRef:
+                name: tastekart-config
+            - secretRef:
+                name: tastekart-secret
+          env:
+            - name: PORT
+              value: "3005"
+          readinessProbe:
+            tcpSocket:
+              port: 3005
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            tcpSocket:
+              port: 3005
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalog-service
+  namespace: tastekart
+  labels:
+    app: catalog-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3005
+      targetPort: 3005
+      name: http
+  selector:
+    app: catalog-service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+  namespace: tastekart
+  labels:
+    app: order-service
+    app.kubernetes.io/name: order-service
+    app.kubernetes.io/part-of: tastekart-platform
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: order-service
+  template:
+    metadata:
+      labels:
+        app: order-service
+    spec:
+      imagePullSecrets:
+        - name: ecr-secret
+      containers:
+        - name: order-service
+          image: 305042756398.dkr.ecr.ap-south-1.amazonaws.com/tastekart-backend:latest
+          imagePullPolicy: Always
+          command: ["uvicorn", "backend.services.order_service.main:app", "--host", "0.0.0.0", "--port", "3003"]
+          ports:
+            - containerPort: 3003
+              name: http
+          envFrom:
+            - configMapRef:
+                name: tastekart-config
+            - secretRef:
+                name: tastekart-secret
+          env:
+            - name: PORT
+              value: "3003"
+          readinessProbe:
+            tcpSocket:
+              port: 3003
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            tcpSocket:
+              port: 3003
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service
+  namespace: tastekart
+  labels:
+    app: order-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3003
+      targetPort: 3003
+      name: http
+  selector:
+    app: order-service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: partner-service
+  namespace: tastekart
+  labels:
+    app: partner-service
+    app.kubernetes.io/name: partner-service
+    app.kubernetes.io/part-of: tastekart-platform
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: partner-service
+  template:
+    metadata:
+      labels:
+        app: partner-service
+    spec:
+      imagePullSecrets:
+        - name: ecr-secret
+      containers:
+        - name: partner-service
+          image: 305042756398.dkr.ecr.ap-south-1.amazonaws.com/tastekart-backend:latest
+          imagePullPolicy: Always
+          command: ["uvicorn", "backend.services.partner_service.main:app", "--host", "0.0.0.0", "--port", "3004"]
+          ports:
+            - containerPort: 3004
+              name: http
+          envFrom:
+            - configMapRef:
+                name: tastekart-config
+            - secretRef:
+                name: tastekart-secret
+          env:
+            - name: PORT
+              value: "3004"
+          readinessProbe:
+            tcpSocket:
+              port: 3004
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            tcpSocket:
+              port: 3004
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: partner-service
+  namespace: tastekart
+  labels:
+    app: partner-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3004
+      targetPort: 3004
+      name: http
+  selector:
+    app: partner-service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-gateway
+  namespace: tastekart
+  labels:
+    app: app-gateway
+    app.kubernetes.io/name: app-gateway
+    app.kubernetes.io/part-of: tastekart-platform
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: app-gateway
+  template:
+    metadata:
+      labels:
+        app: app-gateway
+    spec:
+      imagePullSecrets:
+        - name: ecr-secret
+      containers:
+        - name: app-gateway
+          image: 305042756398.dkr.ecr.ap-south-1.amazonaws.com/tastekart-backend:latest
+          imagePullPolicy: Always
+          command: ["uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "3001"]
+          ports:
+            - containerPort: 3001
+              name: http
+          envFrom:
+            - configMapRef:
+                name: tastekart-config
+            - secretRef:
+                name: tastekart-secret
+          env:
+            - name: PORT
+              value: "3001"
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3001
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 3001
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 150m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-gateway
+  namespace: tastekart
+  labels:
+    app: app-gateway
+spec:
+  type: NodePort
+  ports:
+    - port: 3001
+      targetPort: 3001
+      nodePort: 30001
+      name: http
+  selector:
+    app: app-gateway
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tastekart-ingress
+  namespace: tastekart
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+    - host: tastekart.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: app-gateway
+                port:
+                  number: 3001

@@ -7,3 +7,19 @@ frontend/node_modules
 database/*.sqlite
 __pycache__/
 *.py[cod]
+
+# Terraform files & states
+**/.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.tfstate.lock.info
+crash.log
+crash.*.log
+*.tfvars
+!*.tfvars.example
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc

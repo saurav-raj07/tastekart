@@ -17,9 +17,11 @@ spec:
       labels:
         app: partner-service
     spec:
+      imagePullSecrets:
+        - name: ecr-secret
       containers:
         - name: partner-service
-          image: tastekart/backend:latest
+          image: 305042756398.dkr.ecr.ap-south-1.amazonaws.com/tastekart-backend:latest
           imagePullPolicy: Always
           command: ["uvicorn", "backend.services.partner_service.main:app", "--host", "0.0.0.0", "--port", "3004"]
           ports:

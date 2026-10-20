@@ -102,6 +102,66 @@ docker compose down -v
 
 For a backup, use `mongodump` against the MongoDB container or configure a regular MongoDB backup process before testing destructive changes.
 
+## Cloud Deployment (AWS, Terraform & Kubernetes)
+
+TasteKart includes full Infrastructure as Code (Terraform) and Kubernetes manifests to take the entire microservice stack live on AWS.
+
+### Architecture Overview
+- **Cloud Provider**: AWS (`ap-south-1`)
+- **Infrastructure as Code**: Terraform in `terraform/`
+- **Container Registry**: AWS ECR (`tastekart-backend`)
+- **Compute**: Single EC2 instance (`t3.medium`) running **K3s** (lightweight Kubernetes)
+- **Database**: In-cluster MongoDB (`mongo:7.0`) with persistent EBS disk volume (`10Gi`)
+- **Networking**: VPC, Public Subnet, Security Groups (Ports 80, 443, 3001, 30001, 22), Elastic IP
+
+### 🚀 1-Click Launch (Recommended)
+From the repository root:
+```powershell
+python scripts/launch.py
+```
+This script automatically:
+1. Provisions AWS infrastructure using `terraform apply`
+2. Authenticates with AWS ECR, builds, and pushes the unified Docker image
+3. Waits for the EC2 instance and K3s node to report `Ready`
+4. Bundles and applies all Kubernetes manifests in `k8s/` via AWS SSM
+5. Verifies `/api/health` and displays your live URL (`http://<ELASTIC_IP>:30001`)
+
+### 🛑 1-Click Teardown (Stop Paying)
+When you want to destroy all cloud infrastructure to prevent ongoing charges:
+```powershell
+python scripts/destroy.py
+```
+This cleanly purges the ECR repository and runs `terraform destroy -auto-approve`.
+
+### Manual Step-by-Step Deployment
+If you prefer running commands manually:
+1. **Provision Infrastructure**:
+   ```powershell
+   cd terraform
+   terraform apply
+   ```
+2. **Push Docker Image to ECR**:
+   ```powershell
+   (aws ecr get-login-password --region ap-south-1).Trim() | docker login --username AWS --password-stdin 305042756398.dkr.ecr.ap-south-1.amazonaws.com
+   docker build -t 305042756398.dkr.ecr.ap-south-1.amazonaws.com/tastekart-backend:latest .
+   docker push 305042756398.dkr.ecr.ap-south-1.amazonaws.com/tastekart-backend:latest
+   ```
+3. **Deploy to K3s**:
+   ```powershell
+   python scripts/deploy_k8s.py
+   ```
+4. **Access the Application**:
+   ```text
+   http://<ELASTIC_IP>:30001
+   ```
+
+### CI/CD Pipeline (Jenkins)
+The repository includes a complete [`Jenkinsfile`](Jenkinsfile) that automates:
+- Syntax checking for Python and JavaScript
+- AWS ECR login, Docker build, and image tagging
+- Rolling deployment to Kubernetes (`kubectl apply -f k8s/...`)
+- Post-deployment health verification on `/api/health`
+
 ## API overview
 
 The gateway exposes these main route groups:
@@ -142,6 +202,14 @@ frontend/
 ├── scripts/                     # Page behavior and API calls
 ├── styles/                      # Page stylesheets
 └── assets/                      # Images and branding
+
+k8s/                             # Kubernetes manifests (deployments, services, pvc, secret)
+terraform/                       # Terraform AWS IaaC (VPC, ECR, EC2, K3s, IAM, EIP)
+scripts/
+├── launch.py                    # 1-Click AWS deploy & K8s rollout
+├── destroy.py                   # 1-Click AWS teardown
+├── deploy_k8s.py                # K3s manifest bundle & SSM deployer
+└── test_health.py               # Health validation test
 ```
 
 ## Development checks

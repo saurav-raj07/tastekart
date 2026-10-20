@@ -1,0 +1,7 @@
+aws_region       = "ap-south-1"
+project_name     = "tastekart"
+environment      = "prod"
+instance_type    = "t3.medium"
+root_volume_size = 30
+allowed_ssh_cidr = "0.0.0.0/0"
+# ssh_key_name   = "my-aws-key-pair" # Optional: existing key pair in ap-south-1
