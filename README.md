@@ -124,7 +124,11 @@ This script automatically:
 2. Authenticates with AWS ECR, builds, and pushes the unified Docker image
 3. Waits for the EC2 instance and K3s node to report `Ready`
 4. Bundles and applies all Kubernetes manifests in `k8s/` via AWS SSM
-5. Verifies `/api/health` and displays your live URL (`http://<ELASTIC_IP>:30001`)
+5. Verifies `/api/health` and displays all live portal URLs:
+   - **Customer App**: `http://<ELASTIC_IP>:30001`
+   - **Partner Workspace**: `http://<ELASTIC_IP>:30001/partner`
+   - **Admin Workspace**: `http://<ELASTIC_IP>:30001/admin`
+   - **Health Check**: `http://<ELASTIC_IP>:30001/api/health`
 
 ### 🛑 1-Click Teardown (Stop Paying)
 When you want to destroy all cloud infrastructure to prevent ongoing charges:
@@ -150,10 +154,12 @@ If you prefer running commands manually:
    ```powershell
    python scripts/deploy_k8s.py
    ```
-4. **Access the Application**:
-   ```text
-   http://<ELASTIC_IP>:30001
-   ```
+4. **Access the Portals**:
+   - **Customer Portal**: `http://<ELASTIC_IP>:30001`
+   - **Partner Portal**: `http://<ELASTIC_IP>:30001/partner` (Restaurant management & order status workflow)
+   - **Admin Portal**: `http://<ELASTIC_IP>:30001/admin` (Restaurant & partner overview)
+     - *Default Admin Credentials*: `admin@tastekart.com` / `ChangeMeAdmin123!` (configured in `k8s/secret.yaml`)
+   - **API Health**: `http://<ELASTIC_IP>:30001/api/health`
 
 ### CI/CD Pipeline (Jenkins)
 The repository includes a complete [`Jenkinsfile`](Jenkinsfile) that automates:

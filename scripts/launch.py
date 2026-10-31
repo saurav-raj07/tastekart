@@ -197,8 +197,11 @@ def step_verify_and_wait(instance_id, app_url):
     
     print("\n" + "*" * 60)
     print("TASTEKART IS LIVE!")
-    print(f"--> Direct URL: {app_url}")
-    print(f"--> Health Check: {app_url}/api/health")
+    print(f"--> Customer App:     {app_url}")
+    print(f"--> Partner Portal:   {app_url}/partner")
+    print(f"--> Admin Portal:     {app_url}/admin")
+    print(f"    (Default Admin:   admin@tastekart.com / ChangeMeAdmin123!)")
+    print(f"--> Health Check:     {app_url}/api/health")
     print("*" * 60)
 
 def main():

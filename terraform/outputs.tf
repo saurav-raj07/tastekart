@@ -18,6 +18,16 @@ output "app_url" {
   value       = "http://${aws_eip.k3s_eip.public_ip}:30001"
 }
 
+output "partner_portal_url" {
+  description = "Partner Workspace Portal URL"
+  value       = "http://${aws_eip.k3s_eip.public_ip}:30001/partner"
+}
+
+output "admin_portal_url" {
+  description = "Admin Dashboard Portal URL"
+  value       = "http://${aws_eip.k3s_eip.public_ip}:30001/admin"
+}
+
 output "ssh_connection_command" {
   description = "Command to SSH into the instance if a key was provided"
   value       = var.ssh_key_name != "" ? "ssh -i <YOUR_KEY.pem> ubuntu@${aws_eip.k3s_eip.public_ip}" : "Access via AWS Systems Manager Session Manager or set ssh_key_name in terraform.tfvars"
