@@ -42,30 +42,71 @@ def step_terraform_apply():
     public_ip = outputs["ec2_public_ip"]["value"]
     ecr_url = outputs["ecr_repository_url"]["value"]
     app_url = outputs["app_url"]["value"]
+    partner_url = outputs.get("partner_portal_url", {}).get("value", f"{app_url}/partner")
+    admin_url = outputs.get("admin_portal_url", {}).get("value", f"{app_url}/admin")
+    health_url = f"{app_url}/api/health"
     
     print(f"[SUCCESS] Infrastructure ready:")
     print(f"  - EC2 Instance ID: {instance_id}")
     print(f"  - Public Elastic IP: {public_ip}")
-    print(f"  - ECR URL: {ecr_url}")
-    print(f"  - App URL: {app_url}")
+    print(f"  - ECR Repository:  {ecr_url}")
+    print(f"  - Customer App:    {app_url}")
+    print(f"  - Partner Portal:  {partner_url}")
+    print(f"  - Admin Portal:    {admin_url}")
+    print(f"  - Health Check:    {health_url}")
     
     return instance_id, public_ip, ecr_url, app_url
+
+def check_docker_running():
+    proc = subprocess.run(["docker", "info"], capture_output=True)
+    if proc.returncode != 0:
+        print("[INFO] Docker Desktop is not running. Starting Docker Desktop automatically...")
+        subprocess.run(["powershell", "-Command", "Start-Process 'C:\\Program Files\\Docker\\Docker\\Docker Desktop.exe'"], capture_output=True)
+        for i in range(20):
+            time.sleep(3)
+            if subprocess.run(["docker", "info"], capture_output=True).returncode == 0:
+                print("[SUCCESS] Docker Desktop is now running.")
+                return
+        print("[ERROR] Docker Desktop could not be reached. Please ensure Docker Desktop is running.")
+        sys.exit(1)
 
 def step_push_image(ecr_url):
     print("\n" + "=" * 60)
     print("STEP 2: Authenticating and Pushing Image to ECR")
     print("=" * 60)
     
-    # Login to ECR
-    login_cmd = f"(aws ecr get-login-password --region {AWS_REGION}).Trim() | docker login --username AWS --password-stdin {ecr_url.split('/')[0]}"
-    run_cmd(f"powershell -Command \"{login_cmd}\"")
+    check_docker_running()
     
-    # Build image (uses cache if unchanged)
+    # 1. Login to ECR via pure Python stdin (immune to Windows PowerShell/CMD newline issues)
+    print(f"Obtaining authentication token from AWS ECR ({AWS_REGION})...")
+    token_proc = subprocess.run(
+        ["aws", "ecr", "get-login-password", "--region", AWS_REGION],
+        capture_output=True,
+        text=True
+    )
+    if token_proc.returncode != 0:
+        print(f"[ERROR] Failed to obtain ECR password:\n{token_proc.stderr}")
+        sys.exit(1)
+        
+    registry = ecr_url.split('/')[0]
+    print(f"Logging in to Docker registry: {registry}...")
+    login_proc = subprocess.run(
+        ["docker", "login", "--username", "AWS", "--password-stdin", registry],
+        input=token_proc.stdout.strip(),
+        text=True,
+        capture_output=True
+    )
+    if login_proc.returncode != 0:
+        print(f"[ERROR] Docker login to ECR failed:\nSTDOUT:\n{login_proc.stdout}\nSTDERR:\n{login_proc.stderr}")
+        sys.exit(1)
+    print("[SUCCESS] Docker logged into AWS ECR.")
+    
+    # 2. Build image (uses cache if unchanged)
     tag = f"{ecr_url}:latest"
     print(f"Building Docker image: {tag}...")
     run_cmd(f"docker build -t {tag} .", cwd=PROJECT_ROOT)
     
-    # Push image
+    # 3. Push image
     print(f"Pushing Docker image: {tag}...")
     run_cmd(f"docker push {tag}", cwd=PROJECT_ROOT)
     print("[SUCCESS] Image pushed to ECR.")
